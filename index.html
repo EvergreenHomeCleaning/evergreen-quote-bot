@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Evergreen Quotes</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0f0d;
+  --card: #131a16;
+  --card2: #1a2420;
+  --border: #243029;
+  --green: #4ade80;
+  --green-dim: #22c55e;
+  --green-dark: #166534;
+  --green-glow: rgba(74, 222, 128, 0.15);
+  --text: #e8f0ec;
+  --text2: #9aacA0;
+  --white: #ffffff;
+  --red: #f87171;
+  --yellow: #fbbf24;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+  padding-bottom: 100px;
+}
+
+.header {
+  text-align: center;
+  padding: 20px 0 24px;
+}
+.header h1 {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.1rem;
+  color: var(--green);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.header p {
+  color: var(--text2);
+  font-size: 0.82rem;
+  margin-top: 4px;
+}
+
+.section { margin-bottom: 20px; }
+.section-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text2);
+  margin-bottom: 10px;
+}
+
+/* SERVICE */
+.service-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.svc-btn {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.svc-btn:active { transform: scale(0.97); }
+.svc-btn.active {
+  border-color: var(--green);
+  background: var(--green-glow);
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.1);
+}
+.svc-btn .icon { font-size: 1.4rem; margin-bottom: 4px; }
+.svc-btn .name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.svc-btn .tag { font-size: 0.62rem; color: var(--text2); margin-top: 2px; }
+.svc-btn.active .name { color: var(--green); }
+
+/* SIZE */
+.size-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.size-row label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text2);
+  min-width: 80px;
+}
+.size-btns { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+.size-btn {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.size-btn:active { transform: scale(0.93); }
+.size-btn.active {
+  border-color: var(--green);
+  background: var(--green-glow);
+  color: var(--green);
+}
+
+/* PRICE */
+.price-display {
+  background: linear-gradient(135deg, var(--green-dark), #14532d);
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.price-display::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(74,222,128,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.price-label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.price-amount {
+  font-family: 'Space Mono', monospace;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--white);
+  margin: 4px 0;
+}
+.price-detail { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+
+/* ADD-ONS */
+.addon-list { display: flex; flex-direction: column; gap: 6px; }
+.addon-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.addon-item:active { transform: scale(0.98); }
+.addon-item.active {
+  border-color: var(--green);
+  background: var(--green-glow);
+}
+.addon-item.included {
+  border-color: var(--green-dark);
+  background: rgba(22, 101, 52, 0.2);
+  pointer-events: none;
+}
+.addon-name { font-size: 0.85rem; font-weight: 500; }
+.addon-price {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--green);
+  font-weight: 700;
+}
+.addon-included {
+  font-size: 0.72rem;
+  color: var(--green-dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.addon-item.active .addon-name { color: var(--green); }
+
+/* WINDOWS */
+.windows-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.win-btn {
+  padding: 8px 12px;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.win-btn:active { transform: scale(0.95); }
+.win-btn.active {
+  border-color: var(--green);
+  background: var(--green-glow);
+  color: var(--green);
+}
+
+/* RECURRING */
+.recurring-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.rec-btn {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.rec-btn:active { transform: scale(0.97); }
+.rec-btn.active {
+  border-color: var(--green);
+  background: var(--green-glow);
+}
+.rec-btn .rec-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.rec-btn .rec-save { font-size: 0.72rem; color: var(--yellow); margin-top: 2px; }
+.rec-btn.active .rec-name { color: var(--green); }
+.rec-disabled { opacity: 0.35; pointer-events: none; }
+
+/* LEAD TYPE */
+.lead-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.lead-btn {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.lead-btn:active { transform: scale(0.97); }
+.lead-btn.active {
+  border-color: var(--green);
+  background: var(--green-glow);
+}
+.lead-btn .lead-icon { font-size: 1.2rem; margin-bottom: 2px; }
+.lead-btn .lead-name { font-size: 0.75rem; font-weight: 600; color: var(--text); }
+.lead-btn.active .lead-name { color: var(--green); }
+
+/* OUTPUT */
+.output-box {
+  background: var(--card2);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  margin-top: 8px;
+  position: relative;
+}
+.output-text {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.copy-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 14px;
+  padding: 16px;
+  background: var(--green);
+  color: var(--bg);
+  border: none;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.copy-btn:active { transform: scale(0.97); background: var(--green-dim); }
+.copy-btn.copied { background: var(--green-dark); color: var(--green); }
+
+.reset-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  background: transparent;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  color: var(--text2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.reset-btn:active { transform: scale(0.97); border-color: var(--red); color: var(--red); }
+
+.hidden { display: none !important; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.25s ease-out; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <h1>🌿 Evergreen Quotes</h1>
+    <p>Quote Generator v3</p>
+  </div>
+
+  <div class="section" id="sec-service">
+    <div class="section-label">Service Type</div>
+    <div class="service-grid" id="service-grid"></div>
+  </div>
+
+  <div class="section hidden" id="sec-size">
+    <div class="section-label">Home Size</div>
+    <div class="size-row">
+      <label>Bedrooms</label>
+      <div class="size-btns" id="bed-btns"></div>
+    </div>
+    <div class="size-row">
+      <label>Bathrooms</label>
+      <div class="size-btns" id="bath-btns"></div>
+    </div>
+  </div>
+
+  <div class="price-display hidden" id="price-display">
+    <div class="price-label">Base Price</div>
+    <div class="price-amount" id="price-amount">$0</div>
+    <div class="price-detail" id="price-detail"></div>
+  </div>
+
+  <div class="section hidden" id="sec-addons">
+    <div class="section-label">Add-ons</div>
+    <div class="addon-list" id="addon-list"></div>
+    <div class="section-label" style="margin-top:12px;">Windows</div>
+    <div class="windows-row" id="windows-row"></div>
+  </div>
+
+  <div class="section hidden" id="sec-recurring">
+    <div class="section-label">Recurring Discount <span id="rec-note" style="color:var(--yellow);font-size:0.65rem;">(Standard only)</span></div>
+    <div class="recurring-grid" id="recurring-grid"></div>
+  </div>
+
+  <div class="section hidden" id="sec-lead">
+    <div class="section-label">Message Style</div>
+    <div class="lead-grid" id="lead-grid"></div>
+  </div>
+
+  <div class="section hidden" id="sec-output">
+    <div class="section-label">Ready to Copy</div>
+    <div class="output-box">
+      <div class="output-text" id="output-text"></div>
+    </div>
+    <button class="copy-btn" id="copy-btn" onclick="copyText()">📋 Copy Message</button>
+    <button class="reset-btn" onclick="resetAll()">↺ New Quote</button>
+  </div>
+
+</div>
+
+<script>
+const PRICES = {
+  standard: {
+    "1-1":115,"1-2":135,"2-1":140,"2-2":160,"2-3":180,
+    "3-1":170,"3-2":190,"3-3":210,"3-4":230,
+    "4-1":220,"4-2":220,"4-3":240,"4-4":260,"4-5":280,
+    "5-1":250,"5-2":250,"5-3":270,"5-4":290,"5-5":310,
+    "6-1":290,"6-2":290,"6-3":290,"6-4":310,"6-5":330
+  },
+  deep: {
+    "1-1":165,"1-2":185,"2-1":185,"2-2":205,"2-3":230,
+    "3-1":220,"3-2":245,"3-3":270,"3-4":295,
+    "4-1":275,"4-2":275,"4-3":300,"4-4":325,"4-5":350,
+    "5-1":305,"5-2":305,"5-3":330,"5-4":355,"5-5":380,
+    "6-1":345,"6-2":345,"6-3":345,"6-4":370,"6-5":395
+  },
+  moveout: {
+    "1-1":199,"1-2":219,"2-1":219,"2-2":239,"2-3":259,
+    "3-1":249,"3-2":269,"3-3":289,"3-4":309,
+    "4-1":289,"4-2":289,"4-3":309,"4-4":329,"4-5":349,
+    "5-1":329,"5-2":329,"5-3":349,"5-4":369,"5-5":389,
+    "6-1":369,"6-2":369,"6-3":369,"6-4":389,"6-5":409
+  }
+};
+
+const ADDONS = [
+  {id:"oven", name:"Oven Cleaning", price:35},
+  {id:"fridge", name:"Fridge Cleaning", price:35},
+  {id:"laundry", name:"Laundry (wash+fold)", price:45},
+  {id:"pet", name:"Pet Home", price:15},
+  {id:"basement", name:"Basement", price:60},
+  {id:"baseboards", name:"Baseboards", price:25},
+  {id:"cabinets", name:"Interior Cabinets", price:45},
+];
+
+const WINDOWS = [
+  {id:"w1", label:"1–5", price:15},
+  {id:"w2", label:"6–10", price:30},
+  {id:"w3", label:"11–15", price:45},
+  {id:"w4", label:"16–20", price:60},
+  {id:"w5", label:"21+", price:75},
+];
+
+const SERVICES = [
+  {id:"standard", icon:"🧹", name:"Standard", tag:"Regular cleaning"},
+  {id:"deep", icon:"🧽", name:"Deep Clean", tag:"Baseboards incl."},
+  {id:"moveout", icon:"📦", name:"Move-Out", tag:"Baseboards + cabinets"},
+];
+
+const RECURRING = [
+  {id:"weekly", name:"Weekly", save:"Save 15%", pct:0.15},
+  {id:"biweekly", name:"Bi-weekly", save:"Save 10%", pct:0.10},
+  {id:"monthly", name:"Monthly", save:"Save 5%", pct:0.05},
+  {id:"onetime", name:"One-time", save:"", pct:0},
+];
+
+const LEADS = [
+  {id:"direct", icon:"📥", name:"Direct"},
+  {id:"cold", icon:"🥶", name:"Cold"},
+  {id:"followup", icon:"🔁", name:"Follow-up"},
+];
+
+const SERVICE_LABELS = {
+  standard: "standard cleaning",
+  deep: "deep clean",
+  moveout: "move-out cleaning"
+};
+
+let state = {
+  service: null, beds: null, baths: null,
+  addons: new Set(), windows: null,
+  recurring: "onetime", lead: "direct"
+};
+
+function init() {
+  const sg = document.getElementById('service-grid');
+  SERVICES.forEach(s => {
+    const d = document.createElement('div');
+    d.className = 'svc-btn';
+    d.dataset.id = s.id;
+    d.innerHTML = `<div class="icon">${s.icon}</div><div class="name">${s.name}</div><div class="tag">${s.tag}</div>`;
+    d.onclick = () => selectService(s.id);
+    sg.appendChild(d);
+  });
+
+  const bb = document.getElementById('bed-btns');
+  for (let i = 1; i <= 6; i++) {
+    const b = document.createElement('div');
+    b.className = 'size-btn';
+    b.dataset.val = i;
+    b.textContent = i;
+    b.onclick = () => selectBeds(i);
+    bb.appendChild(b);
+  }
+
+  const rg = document.getElementById('recurring-grid');
+  RECURRING.forEach(r => {
+    const d = document.createElement('div');
+    d.className = 'rec-btn' + (r.id === 'onetime' ? ' active' : '');
+    d.dataset.id = r.id;
+    d.innerHTML = `<div class="rec-name">${r.name}</div>${r.save ? `<div class="rec-save">${r.save}</div>` : ''}`;
+    d.onclick = () => selectRecurring(r.id);
+    rg.appendChild(d);
+  });
+
+  const lg = document.getElementById('lead-grid');
+  LEADS.forEach(l => {
+    const d = document.createElement('div');
+    d.className = 'lead-btn' + (l.id === 'direct' ? ' active' : '');
+    d.dataset.id = l.id;
+    d.innerHTML = `<div class="lead-icon">${l.icon}</div><div class="lead-name">${l.name}</div>`;
+    d.onclick = () => selectLead(l.id);
+    lg.appendChild(d);
+  });
+
+  const wr = document.getElementById('windows-row');
+  WINDOWS.forEach(w => {
+    const b = document.createElement('div');
+    b.className = 'win-btn';
+    b.dataset.id = w.id;
+    b.innerHTML = `${w.label} <span style="color:var(--green);margin-left:4px;">$${w.price}</span>`;
+    b.onclick = () => toggleWindow(w.id);
+    wr.appendChild(b);
+  });
+}
+
+function selectService(id) {
+  state.service = id;
+  state.beds = null;
+  state.baths = null;
+  state.addons = new Set();
+  state.windows = null;
+  state.recurring = "onetime";
+
+  document.querySelectorAll('.svc-btn').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+  show('sec-size');
+  hide('price-display'); hide('sec-addons'); hide('sec-recurring'); hide('sec-lead'); hide('sec-output');
+  document.querySelectorAll('#bed-btns .size-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('bath-btns').innerHTML = '';
+  document.querySelectorAll('.rec-btn').forEach(b => b.classList.toggle('active', b.dataset.id === 'onetime'));
+  updateRecurringState();
+  fadeIn('sec-size');
+}
+
+function selectBeds(n) {
+  state.beds = n;
+  state.baths = null;
+  document.querySelectorAll('#bed-btns .size-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.val) === n));
+
+  const bb = document.getElementById('bath-btns');
+  bb.innerHTML = '';
+  const table = PRICES[state.service];
+  const maxBath = Math.max(...Object.keys(table).filter(k => parseInt(k.split('-')[0]) === n).map(k => parseInt(k.split('-')[1])));
+
+  for (let i = 1; i <= maxBath; i++) {
+    const b = document.createElement('div');
+    b.className = 'size-btn';
+    b.dataset.val = i;
+    b.textContent = i;
+    b.onclick = () => selectBaths(i);
+    bb.appendChild(b);
+  }
+  hide('price-display'); hide('sec-addons'); hide('sec-recurring'); hide('sec-lead'); hide('sec-output');
+}
+
+function selectBaths(n) {
+  state.baths = n;
+  document.querySelectorAll('#bath-btns .size-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.val) === n));
+  updatePrice();
+  buildAddons();
+  show('price-display'); show('sec-addons'); show('sec-recurring'); show('sec-lead');
+  fadeIn('price-display'); fadeIn('sec-addons'); fadeIn('sec-recurring'); fadeIn('sec-lead');
+  updateRecurringState();
+  generateOutput();
+}
+
+function toggleAddon(id) {
+  if (state.addons.has(id)) state.addons.delete(id);
+  else state.addons.add(id);
+  document.querySelectorAll('.addon-item').forEach(a => {
+    if (a.dataset.id === id) a.classList.toggle('active', state.addons.has(id));
+  });
+  updatePrice();
+  generateOutput();
+}
+
+function toggleWindow(id) {
+  state.windows = state.windows === id ? null : id;
+  document.querySelectorAll('.win-btn').forEach(b => b.classList.toggle('active', b.dataset.id === state.windows));
+  updatePrice();
+  generateOutput();
+}
+
+function selectRecurring(id) {
+  state.recurring = id;
+  document.querySelectorAll('.rec-btn').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+  updatePrice();
+  generateOutput();
+}
+
+function selectLead(id) {
+  state.lead = id;
+  document.querySelectorAll('.lead-btn').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+  generateOutput();
+}
+
+function getBasePrice() {
+  return PRICES[state.service]?.[`${state.beds}-${state.baths}`] || null;
+}
+
+function getAddonTotal() {
+  let total = 0;
+  state.addons.forEach(id => {
+    const a = ADDONS.find(x => x.id === id);
+    if (a) total += a.price;
+  });
+  if (state.windows) {
+    const w = WINDOWS.find(x => x.id === state.windows);
+    if (w) total += w.price;
+  }
+  return total;
+}
+
+function getTotal() {
+  const base = getBasePrice();
+  if (!base) return {base:0, addons:0, discount:0, total:0};
+  const addonTotal = getAddonTotal();
+  const subtotal = base + addonTotal;
+  let discount = 0;
+  if (state.service === 'standard') {
+    const r = RECURRING.find(x => x.id === state.recurring);
+    if (r && r.pct > 0) discount = Math.round(subtotal * r.pct);
+  }
+  return {base, addons: addonTotal, discount, total: subtotal - discount};
+}
+
+function updatePrice() {
+  const calc = getTotal();
+  document.getElementById('price-amount').textContent = `$${calc.total}`;
+  let parts = [];
+  if (calc.addons > 0) parts.push(`+$${calc.addons} add-ons`);
+  if (calc.discount > 0) parts.push(`-$${calc.discount} discount`);
+  document.getElementById('price-detail').textContent = parts.length ? `Base $${calc.base} ${parts.join(' ')}` : `${state.beds}bd/${state.baths}ba`;
+}
+
+function updateRecurringState() {
+  const isStd = state.service === 'standard';
+  document.getElementById('recurring-grid').classList.toggle('rec-disabled', !isStd);
+  document.getElementById('rec-note').style.display = isStd ? 'none' : 'inline';
+}
+
+function buildAddons() {
+  state.addons = new Set();
+  state.windows = null;
+  const list = document.getElementById('addon-list');
+  list.innerHTML = '';
+
+  ADDONS.forEach(a => {
+    const included =
+      (a.id === 'baseboards' && (state.service === 'deep' || state.service === 'moveout')) ||
+      (a.id === 'cabinets' && state.service === 'moveout');
+
+    const d = document.createElement('div');
+    d.className = 'addon-item' + (included ? ' included' : '');
+    d.dataset.id = a.id;
+    if (included) {
+      d.innerHTML = `<span class="addon-name">${a.name}</span><span class="addon-included">✓ Included</span>`;
+    } else {
+      d.innerHTML = `<span class="addon-name">${a.name}</span><span class="addon-price">+$${a.price}</span>`;
+      d.onclick = () => toggleAddon(a.id);
+    }
+    list.appendChild(d);
+  });
+  document.querySelectorAll('.win-btn').forEach(b => b.classList.remove('active'));
+}
+
+// ═══════════════════════════════════════════════
+// MESSAGE TEMPLATES
+// ═══════════════════════════════════════════════
+function getIncludedList() {
+  // Build list of everything included in the price
+  let items = [];
+
+  // Default inclusions by service
+  if (state.service === 'deep') items.push('baseboards');
+  if (state.service === 'moveout') { items.push('baseboards'); items.push('cabinets'); }
+
+  // Selected add-ons
+  const addonNames = {
+    oven:'oven cleaning', fridge:'fridge cleaning', laundry:'laundry',
+    pet:'pet home', basement:'basement', baseboards:'baseboards', cabinets:'cabinets'
+  };
+  state.addons.forEach(id => {
+    const name = addonNames[id];
+    if (name && !items.includes(name)) items.push(name);
+  });
+
+  // Windows
+  if (state.windows) {
+    const w = WINDOWS.find(x => x.id === state.windows);
+    if (w) items.push(`window cleaning (${w.label})`);
+  }
+
+  return items;
+}
+
+function formatIncluded(items) {
+  if (items.length === 0) return '';
+  // Capitalize first item
+  const capitalized = items[0].charAt(0).toUpperCase() + items[0].slice(1);
+  const rest = items.slice(1);
+  return [capitalized, ...rest].join(', ') + ' included.';
+}
+
+function generateOutput() {
+  if (!state.service || !state.beds || !state.baths) return;
+
+  const calc = getTotal();
+  const size = `${state.beds}bd/${state.baths}ba`;
+  const label = SERVICE_LABELS[state.service];
+  let msg = '';
+
+  // ── FOLLOW-UP ──
+  if (state.lead === 'followup') {
+    msg = `Checking in — want to lock in [date]?`;
+    showOutput(msg);
+    return;
+  }
+
+  const items = getIncludedList();
+  const inclText = formatIncluded(items);
+
+  // ── DIRECT ──
+  if (state.lead === 'direct') {
+    msg = `For a ${size} ${label} it's $${calc.total}.`;
+    if (inclText) msg += ` ${inclText}`;
+    if (state.service === 'moveout') {
+      msg += ` 😊 What's your move-out date?`;
+    } else {
+      msg += ` 😊 What date works for you?`;
+    }
+    if (state.service === 'standard') {
+      if (state.recurring === 'weekly') msg += `\n\n📅 Weekly schedule — 15% discount applied.`;
+      else if (state.recurring === 'biweekly') msg += `\n\n📅 Bi-weekly schedule — 10% discount applied.`;
+      else if (state.recurring === 'monthly') msg += `\n\n📅 Monthly schedule — 5% discount applied.`;
+    }
+  }
+
+  // ── COLD ──
+  else if (state.lead === 'cold') {
+    const svcName = {standard:'Standard cleaning', deep:'Deep clean', moveout:'Move-out cleaning'}[state.service];
+    msg = `[Name]! Oleh here from Evergreen Home Cleaning. ${svcName} for a ${size} — $${calc.total}`;
+    if (inclText) msg += `, ${inclText.charAt(0).toLowerCase() + inclText.slice(1)}`;
+    else msg += `.`;
+    // Remove trailing period if inclText already has one, then add insured
+    if (!msg.endsWith('.')) msg += '';
+    msg += ` Fully insured. Have availability this week!`;
+    if (state.service === 'standard' && state.recurring !== 'onetime') {
+      const labels = {weekly:'weekly (15% off)',biweekly:'bi-weekly (10% off)',monthly:'monthly (5% off)'};
+      msg += ` Recurring ${labels[state.recurring]} available.`;
+    }
+  }
+
+  showOutput(msg);
+}
+
+function showOutput(msg) {
+  document.getElementById('output-text').textContent = msg;
+  show('sec-output');
+  const btn = document.getElementById('copy-btn');
+  btn.textContent = '📋 Copy Message';
+  btn.classList.remove('copied');
+
+  // Scroll to output
+  setTimeout(() => {
+    document.getElementById('sec-output').scrollIntoView({behavior:'smooth', block:'center'});
+  }, 100);
+}
+
+function copyText() {
+  const text = document.getElementById('output-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy Message';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function resetAll() {
+  state = {service:null, beds:null, baths:null, addons:new Set(), windows:null, recurring:"onetime", lead:"direct"};
+  document.querySelectorAll('.svc-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#bed-btns .size-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('bath-btns').innerHTML = '';
+  document.querySelectorAll('.rec-btn').forEach(b => b.classList.toggle('active', b.dataset.id === 'onetime'));
+  document.querySelectorAll('.lead-btn').forEach(b => b.classList.toggle('active', b.dataset.id === 'direct'));
+  hide('sec-size'); hide('price-display'); hide('sec-addons'); hide('sec-recurring'); hide('sec-lead'); hide('sec-output');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function show(id) { document.getElementById(id).classList.remove('hidden'); }
+function hide(id) { document.getElementById(id).classList.add('hidden'); }
+function fadeIn(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('fade-in');
+  void el.offsetWidth;
+  el.classList.add('fade-in');
+}
+
+init();
+</script>
+</body>
+</html>
